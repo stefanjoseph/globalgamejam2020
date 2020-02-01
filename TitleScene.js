@@ -1,6 +1,10 @@
-class Scene1 extends Phaser.Scene {
+class TitleScene extends Phaser.Scene {
   constructor(){
     super("TitleScene");
+  }
+
+  preload(){
+    this.load.image("ball", "images/ball.png")
   }
 
   create() {

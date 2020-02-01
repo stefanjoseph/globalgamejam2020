@@ -1,4 +1,4 @@
-class Scene2 extends Phaser.Scene {
+class BuildScene extends Phaser.Scene {
   constructor(){
     super("BuildScene");
   }
@@ -6,16 +6,18 @@ class Scene2 extends Phaser.Scene {
   create(){
     this.add.text(20, 20, "Playing game", {font: "25px Arial", fill: "yellow"});
 
-    this.circle = new Phaser.Geom.Circle(400, 300, 100);
+    this.ball = this.add.image(400,400,"ball");
+    // this.ball.setOrigin(0,0);
 
-    var graphics = this.add.graphics({ fillStyle: { color: 0xff0000 } });
-    graphics.fillCircleShape(this.circle);
+    // this.circle = new Phaser.Geom.Circle(400, 300, 100);
+    // var graphics = this.add.graphics({ fillStyle: { color: 0xff0000 } });
+    // graphics.fillCircleShape(this.circle);
   }
 
 
   update(){
 
-    this.circle.angle = this.circle.angle+10;
+    this.ball.angle = this.ball.angle+0.5;
 
   }
 
