@@ -104,8 +104,8 @@ class Battle extends Phaser.Scene {
       delay:3000,
       alpha: {
     getStart: () => 1,
-    getEnd: () => 0
-    // onComplete: this.fightEm()
+    getEnd: () => 0,
+    onComplete: this.fightEm()
   }
   });
   // this.fightEm();

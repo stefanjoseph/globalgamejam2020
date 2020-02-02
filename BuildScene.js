@@ -10,8 +10,8 @@ class BuildScene extends Phaser.Scene {
     //physics group for body parts
     var bodyGroup = this.physics.add.group({
         defaultKey: 'ball',
-        bounceX: 0.1,
-        bounceY: 0.1,
+        bounceX: 0,
+        bounceY: 0,
         collideWorldBounds: false
     });
 
@@ -31,7 +31,7 @@ class BuildScene extends Phaser.Scene {
     var scale = 1.37;
     var scaleRate = 0.85;
     this.circleCenter = {x: 320, y: 600};
-    //Rotating concentric circles
+    //Initializing the rotating concentric circles
     for(var i = 0; i < this.numLayers; i++){
       var img = rotationGroup.create(this.circleCenter.x, this.circleCenter.y).setImmovable();
       this.layers.push({image: img, rotationSpeed: rot});
@@ -71,31 +71,9 @@ class BuildScene extends Phaser.Scene {
     }
     else if (this.waitForUp && this.cursorKeys.down.isUp) {
       this.waitForUp = false;
-      if (this.layers.length > 0){
+      if (this.layers.length > 1){
         this.layers.shift().image.destroy();
       }
     }
   }
-
 }
-
-//body part attributes
-//section
-//animal
-//current layer
-//compass_position
-//
-
-//instantiating body parts
-// this.bodyParts = [];
-// for(var i = 0; i < this.numParts; i++){
-//   var x = this.layers[i].image.x + (this.layers[i].image.width/2);
-//   var y = this.layers[i].image.y + (this.layers[i].image.width/2);
-//   this.bodyParts.push({object: new Phaser.Geom.Circle(this.circleCenter.x, this.circleCenter.y, 5),
-//                         rotationSpeed: this.layers[i].rotationSpeed,
-//                         layer: i});
-//
-//   var graphics = this.add.graphics({ fillStyle: { color: 0xff0000 } });
-//   graphics.fillCircleShape(this.bodyParts[i].object);
-//
-// }

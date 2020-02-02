@@ -39,6 +39,7 @@ class TitleScene extends Phaser.Scene {
   update() {
     if(this.cursorKeys.space.isDown){
       this.scene.start("BuildScene");
+      // this.scene.start("Battle");
     }
   }
 
