@@ -11,7 +11,7 @@ class TitleScene extends Phaser.Scene {
     this.load.image("fight", "images/fight.png");
 
     //characters ---
-    var characters = ["dog","mantis","axolotl","bat","duck","mantis","pangolin","robo","slime"];
+    var characters = ["dog","mantis","axolotl","bat","duck","pangolin","robo","slime"];
     for (var i = 0; i < characters.length; i++){
       var creature = characters[i];
       this.load.image(creature+"Head", "images/char_parts/"+ creature +"Head01.png");
