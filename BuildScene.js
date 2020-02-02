@@ -3,23 +3,33 @@ class BuildScene extends Phaser.Scene {
     super("BuildScene");
   }
 
+  selectPart(){
+    console.log("Hit");
+    // console.log(animalPart.texture.key);
+  }
+
   create(){
     // gsap.registerPlugin();
+    this.circleCenter = {x: 320, y: 288};
+    this.cursorKeys = this.input.keyboard.createCursorKeys();
     this.add.text(20, 20, "Playing game", {font: "25px Arial", fill: "yellow"});
-    //physics group for capture icon
-    var captureGroup = this.physics.add.group({
+
+    //physics group for token
+    var tokenGroup = this.physics.add.group({
         defaultKey: 'ball',
         bounceX: 0,
         bounceY: 0,
         collideWorldBounds: false
     });
-    //physics group for capture icon
-    var bodyGroup = this.physics.add.group({
-        bounceX: 0,
-        bounceY: 0,
-        collideWorldBounds: false,
-        immovable: true
-    });
+    //Initializing the capture token
+    var gravityScale = 500;
+    this.groupPos = {x: 350, y: -10};
+    this.token = tokenGroup.create(this.groupPos.x, this.groupPos.y);
+    this.token.setCircle(this.token.width/2);
+    this.token.setGravity(gravityScale*(this.circleCenter.x - this.groupPos.x),
+                          gravityScale*(this.circleCenter.y - this.groupPos.y));
+    this.token.setScale(0.05);
+
     //physics group for concentric circles
     var rotationGroup = this.physics.add.group({
         defaultKey: 'ball',
@@ -34,25 +44,34 @@ class BuildScene extends Phaser.Scene {
     var rot = 0.02;
     var scale = 1.1;
     var scaleRate = 0.85;
-    this.circleCenter = {x: 320, y: 288};
     //Initializing the rotating concentric circles
     for(var i = 0; i < this.numLayers; i++){
       var randomFloat = Math.random();
       var newRot = rot*randomFloat + 0.03;
+      if(randomFloat - 0.5 > 0){newRot *= -1;}
       var img = rotationGroup.create(this.circleCenter.x, this.circleCenter.y);
       img.setCircle(img.width/2);
       img.setScale(scale)
       this.layers.push({image: img, rotationSpeed: newRot, creatures: [], scale: scale});
-      if(randomFloat - 0.5 > 0){
-        rot *= -1;
-      }
       scaleRate -= 0.10;
       scale *= scaleRate;
     }
+    this.physics.add.collider(rotationGroup, this.token);
 
+    //physics group for animal parts
+    var bodyGroup = this.physics.add.group({
+        bounceX: 0,
+        bounceY: 0,
+        collideWorldBounds: false,
+        immovable: true
+    });
     //Initializing the animal parts
     var characters = ["dog","mantis","axolotl","bat","duck","pangolin","robo","slime"];
     var parts = ["Head", "Bod", "Legs"];
+    // var parts = ["Head", "Head", "Head"];
+    // var parts = ["Bod", "Bod", "Bod"];
+    // var parts = ["Legs", "Legs", "Legs"];
+
     var scaleRate = 0.9;
     for(var i = 0; i < this.numLayers - 1; i++){
       var currentAngle = 0;
@@ -64,22 +83,29 @@ class BuildScene extends Phaser.Scene {
         var part = parts[i];
         var posX = this.circleCenter.x + radius*Math.sin(currentAngle);
         var posY = this.circleCenter.y + radius*Math.cos(currentAngle);
-        var img = bodyGroup.create(posX, posY, creature+part);
+        // var img = bodyGroup.create(posX, posY, creature+part);
+        var img = this.physics.add.image(posX, posY, creature+part);
+
         if (parts[i] == "Head"){
+          img.body.setSize(img.width, img.height/2);
           img.setOrigin(0.5, 0.25);
+          img.body.setOffset(0, 0);
+        }
+        else if (parts[i] == "Bod"){
+          img.body.setSize(img.width, img.height/4);
+          img.setOrigin(0.5, 0.6);
+          img.body.setOffset(0, img.height/2);
         }
         else if (parts[i] == "Legs"){
+          img.body.setSize(img.width, img.height/4);
           img.setOrigin(0.5, 0.8);
+          img.body.setOffset(0, 3*img.height/4);
         }
         img.setScale(0.25);
-        this.layers[i].creatures.push({image: img, angle: currentAngle});
+        // img.body.setSize(img.width, img.height/3);
+        this.physics.add.overlap(img, this.token);
+        this.layers[i].creatures.push({name: creature+part, image: img, angle: currentAngle});
         currentAngle += ((2*Math.PI)/characters.length);
-
-        var a = this.circleCenter.x - img.x;
-        var b = this.circleCenter.y - img.y;
-        var c = Math.sqrt( a*a + b*b );
-        console.log(c);
-
       }
       if (i == 0){
         scaleRate -= 0.10;
@@ -88,42 +114,33 @@ class BuildScene extends Phaser.Scene {
         scaleRate -= 0.05;
       }
     }
-
-    //Initializing the capture token
-    var gravityScale = 500;
-    this.groupPos = {x: 350, y: -10};
-    this.bodies = captureGroup.create(this.groupPos.x, this.groupPos.y);
-    this.bodies.setCircle(this.bodies.width/2);
-    this.bodies.setGravity( gravityScale*(this.circleCenter.x - this.groupPos.x),
-                            gravityScale*(this.circleCenter.y - this.groupPos.y));
-    this.bodies.setScale(0.05);
-
-    this.physics.add.collider(rotationGroup, this.bodies);
-
-    this.cursorKeys = this.input.keyboard.createCursorKeys();
   }
 
   update(){
     var circleCenter = this.circleCenter;
+    var token = this.token;
     var scaleRate = 0.9;
-    var changeRate = 0.10
+    var changeRate = 0.10;
     this.layers.forEach(function (layer, index) {
       //spin them creature parts
       layer.creatures.forEach(function(creature, index){
-        // var radius = 0.85*layer.scale*(layer.image.width/2);
         var radius = scaleRate*layer.scale*(layer.image.width/2);
-
         creature.angle = creature.angle + layer.rotationSpeed;
         creature.image.x = circleCenter.x + radius*Math.sin(creature.angle);
         creature.image.y = circleCenter.y + radius*Math.cos(creature.angle);
+
+        if(creature.image.body.hitTest(token.x, token.y)){
+          console.log(creature.name + " Selected");
+        }
+
       });
       scaleRate -= changeRate;
       changeRate -= 0.05;
     });
     var layers = this.layers;
 
-    this.bodies.setGravity(this.circleCenter.x - this.bodies.x,
-                              this.circleCenter.y - this.bodies.y);
+    this.token.setGravity( this.circleCenter.x - this.token.x,
+                            this.circleCenter.y - this.token.y);
 
     //Player input
     if(this.cursorKeys.down.isDown){
