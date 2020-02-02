@@ -8,11 +8,12 @@ class TitleScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.text(20, 20, "Welcome. Press enter to start game.");
+    this.add.text(20, 20, "Welcome. Press space to start game.");
 
     this.cursorKeys = this.input.keyboard.createCursorKeys();
   }
 
+  //Player Input
   update() {
     if(this.cursorKeys.space.isDown){
       this.scene.start("BuildScene");

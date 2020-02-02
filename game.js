@@ -5,6 +5,7 @@ window.onload = function(){
     height: 576,
     backgroundColor: 0x000000,
     scene: [TitleScene, BuildScene, Battle],
+    autoCenter: Phaser.Scale.CENTER_BOTH,
     physics: {
         default: 'arcade',
         arcade: {
