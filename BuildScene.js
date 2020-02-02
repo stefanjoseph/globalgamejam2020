@@ -3,14 +3,10 @@ class BuildScene extends Phaser.Scene {
     super("BuildScene");
   }
 
-  selectPart(){
-    console.log("Hit");
-    // console.log(animalPart.texture.key);
-  }
-
   create(){
     // gsap.registerPlugin();
     this.circleCenter = {x: 320, y: 288};
+    this.activeLayer = -1;
     this.cursorKeys = this.input.keyboard.createCursorKeys();
     this.add.text(20, 20, "Playing game", {font: "25px Arial", fill: "yellow"});
 
@@ -45,6 +41,7 @@ class BuildScene extends Phaser.Scene {
     var scale = 1.1;
     var scaleRate = 0.85;
     //Initializing the rotating concentric circles
+    //goes from outside to inside -> Depth 0, 1, 2, 3
     for(var i = 0; i < this.numLayers; i++){
       var randomFloat = Math.random();
       var newRot = rot*randomFloat + 0.03;
@@ -52,10 +49,11 @@ class BuildScene extends Phaser.Scene {
       var img = rotationGroup.create(this.circleCenter.x, this.circleCenter.y);
       img.setCircle(img.width/2);
       img.setScale(scale)
-      this.layers.push({image: img, rotationSpeed: newRot, creatures: [], scale: scale});
+      this.layers.push({depth: i, image: img, rotationSpeed: newRot, creatures: [], scale: scale});
       scaleRate -= 0.10;
       scale *= scaleRate;
     }
+    console.log(this.layers);
     this.physics.add.collider(rotationGroup, this.token);
 
     //physics group for animal parts
@@ -83,9 +81,7 @@ class BuildScene extends Phaser.Scene {
         var part = parts[i];
         var posX = this.circleCenter.x + radius*Math.sin(currentAngle);
         var posY = this.circleCenter.y + radius*Math.cos(currentAngle);
-        // var img = bodyGroup.create(posX, posY, creature+part);
         var img = this.physics.add.image(posX, posY, creature+part);
-
         if (parts[i] == "Head"){
           img.body.setSize(img.width, img.height/2);
           img.setOrigin(0.5, 0.25);
@@ -102,9 +98,8 @@ class BuildScene extends Phaser.Scene {
           img.body.setOffset(0, 3*img.height/4);
         }
         img.setScale(0.25);
-        // img.body.setSize(img.width, img.height/3);
         this.physics.add.overlap(img, this.token);
-        this.layers[i].creatures.push({name: creature+part, image: img, angle: currentAngle});
+        this.layers[i].creatures.push({name: creature+part, image: img, angle: currentAngle, alive: true});
         currentAngle += ((2*Math.PI)/characters.length);
       }
       if (i == 0){
@@ -121,24 +116,33 @@ class BuildScene extends Phaser.Scene {
     var token = this.token;
     var scaleRate = 0.9;
     var changeRate = 0.10;
-    this.layers.forEach(function (layer, index) {
+    var activeLayer = this.activeLayer;
+
+    for(var i = 0; i < this.numLayers - 1; i++){
+      var layer = this.layers[i];
       //spin them creature parts
-      layer.creatures.forEach(function(creature, index){
-        var radius = scaleRate*layer.scale*(layer.image.width/2);
-        creature.angle = creature.angle + layer.rotationSpeed;
-        creature.image.x = circleCenter.x + radius*Math.sin(creature.angle);
-        creature.image.y = circleCenter.y + radius*Math.cos(creature.angle);
+      layer.creatures.forEach(function(creature, index2){
+        if(creature.alive){
+          var radius = scaleRate*layer.scale*(layer.image.width/2);
+          creature.angle = creature.angle + layer.rotationSpeed;
+          creature.image.x = circleCenter.x + radius*Math.sin(creature.angle);
+          creature.image.y = circleCenter.y + radius*Math.cos(creature.angle);
 
-        if(creature.image.body.hitTest(token.x, token.y)){
-          console.log(creature.name + " Selected");
+          if(creature.image.body.hitTest(token.x, token.y)){
+            if(layer.depth == activeLayer){
+              console.log(creature.name + " Selected");
+              layer.creatures.forEach(function(creature, index2){
+                creature.alive = false;
+                creature.image.destroy();
+                console.log(creature.name + " Destroyed");
+              });
+            }
+          }
         }
-
       });
       scaleRate -= changeRate;
       changeRate -= 0.05;
-    });
-    var layers = this.layers;
-
+    }
     this.token.setGravity( this.circleCenter.x - this.token.x,
                             this.circleCenter.y - this.token.y);
 
@@ -148,9 +152,14 @@ class BuildScene extends Phaser.Scene {
     }
     else if (this.waitForUp && this.cursorKeys.down.isUp) {
       this.waitForUp = false;
-      if (this.layers.length > 1){
-        this.layers.shift().image.destroy();
+
+      if (activeLayer < this.numLayers - 2){
+        this.layers[this.activeLayer+1].image.destroy();
       }
+      if (activeLayer < this.numLayers){
+        this.activeLayer += 1;
+      }
+
     }
   }
 }
