@@ -60,7 +60,8 @@ class Battle extends Phaser.Scene {
 
   var timeline = this.tweens.createTimeline();
 
-  this.tweens.add({
+
+timeline.add({
       targets: count3,
       scale: 10,
       rotation:-.5,
@@ -71,54 +72,63 @@ class Battle extends Phaser.Scene {
     getEnd: () => 0
   }
   });
-  this.tweens.add({
+
+  timeline.add({
       targets: count2,
       scale: 10,
       rotation:.5,
       ease: 'Power1',
       duration: 1100,
-      delay:1000,
       alpha: {
     getStart: () => 1,
     getEnd: () => 0
   }
   });
-  this.tweens.add({
+timeline.add({
       targets: count1,
       scale: 10,
       rotation:.5,
       ease: 'Power1',
       duration: 1300,
-      delay:2000,
+
       alpha: {
     getStart: () => 1,
     getEnd: () => 0
   }
   });
-  this.tweens.add({
+timeline.add({
       targets: fight,
       scale: 5,
       rotation:0,
       ease: 'Power1',
       duration: 1000,
-      delay:3000,
       alpha: {
     getStart: () => 1,
-    getEnd: () => 0
-    // onComplete: this.fightEm()
-  }
+    getEnd: () => 0,
+    // onComplete:this.fightEm
+  },
+  // onComplete:function(){character.makeRandomChar();}
+     // onComplete: this.onCompleteHandler,
   });
-  // this.fightEm();
+    timeline.play();
+// timeline.setCallBack(onComplete,fightEm);
 
-  // setTimeout(function() {
-  //   this.fightEm();
-  // }, 5000);
+  // this.fightEm();
+  // setTimeout(this. fightEm, 5000);
+// delayedCall(5000, this.fightEm());
   }
+
   fightEm(){
     this.character.reposition(320-50,288);
      this.character2.reposition(320+50,288,576,0);
     this.character.makeRandomChar();
     this.character2.makeRandomChar();
+  }
+  onCompleteHandler (tween, targets)
+  {
+    console.log('onCompleteHandler');
+    fightEm();
+      // myImage.setScale(2);
   }
   buildBackground(){
        this.fightBg = this.add.image(320,288,this.fightBackgrounds[Math.floor(Math.random()*this.fightBackgrounds.length)]);
@@ -129,11 +139,12 @@ class Battle extends Phaser.Scene {
 
   update() {
     if(this.cursorKeys.space.isDown){
-  //  this.buildBackground();
-      // this.character.reposition(320-50,288);
-      //  this.character2.reposition(320+50,288,576,0);
-      // this.character.makeRandomChar();
-      // this.character2.makeRandomChar();
+    // this.fightEm();
+   this.buildBackground();
+      this.character.reposition(320-50,288);
+       this.character2.reposition(320+50,288,576,0);
+      this.character.makeRandomChar();
+      this.character2.makeRandomChar();
 
     }
   }
