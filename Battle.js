@@ -6,7 +6,7 @@ class Battle extends Phaser.Scene {
 
   }
 
-    create(){
+  create(){
     this.add.text(20, 20, "Battle Scene!", {font: "25px Arial", fill: "yellow"});
     this.countdown = this.add.container(0,0);
     // this.countdown.this.add.image(320,288,"count3");

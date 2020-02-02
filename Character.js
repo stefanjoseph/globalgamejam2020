@@ -6,7 +6,7 @@ class Character{
     this.legs = legs;
     this.name = name;
     // this.charname;
-    this.animal = ["dog","mantis","axolot"];
+    this.animal = ["dog","mantis","axolotl","bat","duck","mantis","pangolin","robo","slime"];
     this.headParts =[];
     this.bodParts=[];
     this.legParts=[];
