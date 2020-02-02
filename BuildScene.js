@@ -11,7 +11,7 @@ class BuildScene extends Phaser.Scene {
         defaultKey: 'ball',
         bounceX: 0,
         bounceY: 0,
-        collideWorldBounds: true
+        collideWorldBounds: false
     });
     //physics group for capture icon
     var bodyGroup = this.physics.add.group({
@@ -32,7 +32,7 @@ class BuildScene extends Phaser.Scene {
     this.numLayers = 4;
     this.numParts = 3;
     var rot = 0.05;
-    var scale = 1.75;
+    var scale = 1.37;
     var scaleRate = 0.85;
     this.circleCenter = {x: 320, y: 600};
     //Initializing the rotating concentric circles
