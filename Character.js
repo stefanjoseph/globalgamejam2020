@@ -26,7 +26,7 @@ class Character{
       this.parts.setDepth(2);
     this.parts.x = startx;
     this.parts.y = starty;
-    this.parts.setScale(3);
+    this.parts.setScale(.25);
     this.scene.tweens.killAll();
     this.scene.tweens.add({
         targets: this.parts,

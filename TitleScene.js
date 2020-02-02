@@ -11,15 +11,15 @@ class TitleScene extends Phaser.Scene {
     this.load.image("fight", "images/fight.png");
 
     //characters ---
-    this.load.image("dogHead", "images/char_parts/dogHead.png");
-    this.load.image("dogBod", "images/char_parts/dogBod.png");
-    this.load.image("dogLegs", "images/char_parts/dogLegs.png");
-    this.load.image("axolotHead", "images/char_parts/axolotlHead.png");
-    this.load.image("axolotBod", "images/char_parts/axolotlBod.png");
-    this.load.image("axolotLegs", "images/char_parts/axolotlLegs.png");
-    this.load.image("mantisHead", "images/char_parts/mantisHead.png");
-    this.load.image("mantisBod", "images/char_parts/mantisBod.png");
-    this.load.image("mantisLegs", "images/char_parts/mantisLegs.png");
+    this.load.image("dogHead", "images/char_parts/dogHead01.png");
+    this.load.image("dogBod", "images/char_parts/dogBody01.png");
+    this.load.image("dogLegs", "images/char_parts/dogLegs01.png");
+    this.load.image("axolotHead", "images/char_parts/axolotlHead01.png");
+    this.load.image("axolotBod", "images/char_parts/axolotlBody01.png");
+    this.load.image("axolotLegs", "images/char_parts/axolotlLegs01.png");
+    this.load.image("mantisHead", "images/char_parts/mantisHead01.png");
+    this.load.image("mantisBod", "images/char_parts/mantisBody01.png");
+    this.load.image("mantisLegs", "images/char_parts/mantisLegs01.png");
 
     //backgrounds ----
     this.load.image("bg1", "images/backgrounds/scene1.jpg");
