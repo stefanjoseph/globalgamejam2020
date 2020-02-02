@@ -4,7 +4,14 @@ window.onload = function(){
     width: 640,
     height: 576,
     backgroundColor: 0x000000,
-    scene: [TitleScene, BuildScene, Battle]
+    scene: [TitleScene, BuildScene, Battle],
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            debug: false,
+        }
+    }
   }
 
 
