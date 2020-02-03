@@ -4,7 +4,60 @@ class Battle extends Phaser.Scene {
         // this.fightBackgrounds =["bg1","bg2","bg3","bg4","bg5"];
         this.fightBackgrounds =["bg1","bg2"];
   }
-//AWESOME ! 
+
+  init(data){
+    this.data = data;
+    // console.log('init', this.data.head + " :::: " + this.animalFix("dog"));
+console.log(this.data);
+
+
+    // this.animalFix("dog");
+    this.charHead = this.animalFix(data.head);
+    this.charBod = this.animalFix(data.bod);
+    this.charLegs = this.animalFix(data.legs);
+    }
+
+
+animalFix(str){
+
+
+    switch(str){
+      case "dog":
+  return 0;
+      break;
+      case "mantis":
+      return 1;
+      // "dog","mantis","axolotl","bat","duck","pangolin","robo","slime"];
+      break;
+      case "axolotl":
+      return 2;
+      // "dog","mantis","axolotl","bat","duck","pangolin","robo","slime"];
+      break;
+      case "bat":
+      return 3;
+      // "dog","mantis","axolotl","bat","duck","pangolin","robo","slime"];
+      break;
+      case "duck":
+      return 4;
+      // "dog","mantis","axolotl","bat","duck","pangolin","robo","slime"];
+      break;
+      case "pangolin":
+      return 5;
+      // "dog","mantis","axolotl","bat","duck","pangolin","robo","slime"];
+      break;
+      case "robo":
+      return 6;
+      // "dog","mantis","axolotl","bat","duck","pangolin","robo","slime"];
+      break;
+      case "slime":
+      return 7;
+      // "dog","mantis","axolotl","bat","duck","pangolin","robo","slime"];
+      break;
+      default:
+      return 100;
+    }
+}
+//AWESOME !
     create(){
     // this.add.text(20, 20, "Battle Scene!", {font: "25px Arial", fill: "yellow"});
     // this.add.text(20, 20, "Battle Scene!", {font: "25px Arial", fill: "yellow"});
@@ -150,11 +203,12 @@ this.timedEvent = this.time.delayedCall(4100, this.fightEm, [], this);
 
        this.character2.flipIt();
 
+       // this.charHead = animalFix(data.head);
+       // this.charBod = animalFix(data.bod);
+       // this.caarFeet = animalFix(data.legs);
+      this.character.makeRandomChar( this.charHead, this.charBod,this.charLegs);
+      this.character2.makeRandomChar("r","r","r");
 
-      this.character.makeRandomChar(0,0,0);
-
-
-      this.character2.makeRandomChar(1,1,1);
       this.battleActive= true;
     this.battleMode();
     }

@@ -153,14 +153,17 @@ setParts(h,b,l){
     }
 
     //RANDO VERSION ----
+    if(h=="r"){
       var headPart = Math.floor(Math.random()*this.animal.length);
       var bodPart = Math.floor(Math.random()*this.animal.length);
       var legPart = Math.floor(Math.random()*this.animal.length);
+    }else{
       console.log("THIS HEAD "+ this.head );
       //
-      // var headPart = h;
-      // var bodPart = b;
-      // var legPart=l;
+      var headPart = h;
+      var bodPart = b;
+      var legPart=l;
+    }
       // console.log("THIS HEAD2 "+ headPart);
 
 
