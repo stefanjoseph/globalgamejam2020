@@ -188,7 +188,7 @@ class BuildScene extends Phaser.Scene {
         }
       }
 
-      if (activeLayer == 2){
+      if (!this.waitForSelection && activeLayer == 2){
         this.scene.start('Battle', {  head: this.selectedCreature.head,
                                       bod: this.selectedCreature.bod,
                                       legs: this.selectedCreature.legs});
