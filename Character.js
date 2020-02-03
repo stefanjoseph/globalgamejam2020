@@ -9,7 +9,7 @@ class Character{
     this.dead = false;
 
     // this.charname;
-    this.animal = ["dog","mantis","axolot","bat","duck","pangolin","robo","slime"];
+    this.animal = ["dog","mantis","axolotl","bat","duck","pangolin","robo","slime"];
     this.headParts =[];
     this.bodParts=[];
     this.legParts=[];
