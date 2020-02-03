@@ -1,6 +1,6 @@
-class Battle extends Phaser.Scene {
+class BattleBU extends Phaser.Scene {
   constructor(){
-    super("Battle");
+    super("BattleBU");
         // this.fightBackgrounds =["bg1","bg2","bg3","bg4","bg5"];
         this.fightBackgrounds =["bg1","bg2"];
   }
@@ -227,14 +227,14 @@ battleTime ()
     // this.fightBg.alpha = .5;
     if(Math.random()>.5){
       console.log("WINNER :)");
-      this.character.winIt(false);
+      this.character.winIt();
       this.character2.killIt();
       this.winScreen.visible=true;
       this.winScreen.alpha =1;
       this.winScreen.setDepth(1);
     }else{
         console.log("LOSER :( ");
-        this.character2.winIt(true);
+        this.character2.winIt();
         this.character.killIt();
         this.loseScreen.alpha =1;
         this.loseScreen.visible=true;
