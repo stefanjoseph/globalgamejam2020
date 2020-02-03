@@ -47,7 +47,7 @@ class BuildScene extends Phaser.Scene {
 
     //physics group for token
     var tokenGroup = this.physics.add.group({
-        defaultKey: 'token',
+        defaultKey: 'tokenRed',
         bounceX: 0,
         bounceY: 0,
         collideWorldBounds: false
