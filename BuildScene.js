@@ -5,6 +5,7 @@ class BuildScene extends Phaser.Scene {
 
   create(){
     // gsap.registerPlugin();
+    this.selectedCreature = {head: null, bod: null, legs: null};
     this.circleCenter = {x: 320, y: 288};
     this.activeLayer = -1;
     this.cursorKeys = this.input.keyboard.createCursorKeys();
@@ -113,6 +114,7 @@ class BuildScene extends Phaser.Scene {
 
   update(){
     var circleCenter = this.circleCenter;
+    var selectedCreaturePart = "";
     var token = this.token;
     var scaleRate = 0.9;
     var changeRate = 0.10;
@@ -131,6 +133,7 @@ class BuildScene extends Phaser.Scene {
           if(creature.image.body.hitTest(token.x, token.y)){
             if(layer.depth == activeLayer){
               console.log(creature.name + " Selected");
+              selectedCreaturePart = creature.name;
               layer.creatures.forEach(function(creature, index2){
                 creature.alive = false;
                 creature.image.destroy();
@@ -143,6 +146,20 @@ class BuildScene extends Phaser.Scene {
       scaleRate -= changeRate;
       changeRate -= 0.05;
     }
+
+    if(selectedCreaturePart.includes("Head")){
+      this.add.image(circleCenter.x, circleCenter.y, selectedCreaturePart).setScale(0.25);
+      this.selectedCreature.head = selectedCreaturePart.replace("Head","");
+    }
+    else if(selectedCreaturePart.includes("Bod")){
+      this.add.image(circleCenter.x, circleCenter.y, selectedCreaturePart).setScale(0.25);
+      this.selectedCreature.bod = selectedCreaturePart.replace("Bod","");
+    }
+    else if(selectedCreaturePart.includes("Legs")){
+      this.add.image(circleCenter.x, circleCenter.y, selectedCreaturePart).setScale(0.25);
+      this.selectedCreature.legs = selectedCreaturePart.replace("Legs","");
+    }
+
     this.token.setGravity( this.circleCenter.x - this.token.x,
                             this.circleCenter.y - this.token.y);
 
@@ -158,6 +175,12 @@ class BuildScene extends Phaser.Scene {
       }
       if (activeLayer < this.numLayers){
         this.activeLayer += 1;
+      }
+
+      if (activeLayer == this.numLayers){
+        this.scene.start('Battle', {  head: this.selectedCreature.head,
+                                      bod: this.selectedCreature.bod,
+                                      legs: this.selectedCreature.legs});
       }
 
     }
