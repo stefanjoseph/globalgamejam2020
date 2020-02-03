@@ -1,3 +1,12 @@
 div {
   background-color: lightblue;
+  width: 100;
+  height: 100;
+}
+
+body {
+    /* background-color: black; */
+    background-color: #949494;
+  /* background-image: url('images/backgrounds/bg2.jpg'); */
+  /* background-repeat: no-repeat; */
 }
