@@ -5,27 +5,13 @@ class BuildScene extends Phaser.Scene {
 
   create(){
     // gsap.registerPlugin();
+    this.waitForSelection = false;
     this.selectedCreature = {head: null, bod: null, legs: null};
     this.circleCenter = {x: 320, y: 288};
+    this.fightBg = this.add.image(this.circleCenter.x, this.circleCenter.y, "bg3");
+    this.fightBg.setScale(.25);
     this.activeLayer = -1;
     this.cursorKeys = this.input.keyboard.createCursorKeys();
-    this.add.text(20, 20, "Playing game", {font: "25px Arial", fill: "yellow"});
-
-    //physics group for token
-    var tokenGroup = this.physics.add.group({
-        defaultKey: 'ball',
-        bounceX: 0,
-        bounceY: 0,
-        collideWorldBounds: false
-    });
-    //Initializing the capture token
-    var gravityScale = 500;
-    this.groupPos = {x: 350, y: -10};
-    this.token = tokenGroup.create(this.groupPos.x, this.groupPos.y);
-    this.token.setCircle(this.token.width/2);
-    this.token.setGravity(gravityScale*(this.circleCenter.x - this.groupPos.x),
-                          gravityScale*(this.circleCenter.y - this.groupPos.y));
-    this.token.setScale(0.05);
 
     //physics group for concentric circles
     var rotationGroup = this.physics.add.group({
@@ -54,7 +40,27 @@ class BuildScene extends Phaser.Scene {
       scaleRate -= 0.10;
       scale *= scaleRate;
     }
-    console.log(this.layers);
+
+    //Initializing the nice looking wheel
+    this.wheel = this.add.image(this.circleCenter.x, this.circleCenter.y, "wheel");
+    this.wheel.setScale(.25);
+
+    //physics group for token
+    var tokenGroup = this.physics.add.group({
+        defaultKey: 'token',
+        bounceX: 0,
+        bounceY: 0,
+        collideWorldBounds: false
+    });
+    //Initializing the capture token
+    var gravityScale = 500;
+    this.groupPos = {x: 350, y: -10};
+    this.token = tokenGroup.create(this.groupPos.x, this.groupPos.y);
+    this.token.setCircle(this.token.width/2);
+    this.token.setGravity(gravityScale*(this.circleCenter.x - this.groupPos.x),
+                          gravityScale*(this.circleCenter.y - this.groupPos.y));
+    this.token.setScale(0.25);
+
     this.physics.add.collider(rotationGroup, this.token);
 
     //physics group for animal parts
@@ -119,6 +125,7 @@ class BuildScene extends Phaser.Scene {
     var scaleRate = 0.9;
     var changeRate = 0.10;
     var activeLayer = this.activeLayer;
+    var waitForSelection = this.waitForSelection;
 
     for(var i = 0; i < this.numLayers - 1; i++){
       var layer = this.layers[i];
@@ -132,12 +139,13 @@ class BuildScene extends Phaser.Scene {
 
           if(creature.image.body.hitTest(token.x, token.y)){
             if(layer.depth == activeLayer){
-              console.log(creature.name + " Selected");
+              // console.log(creature.name + " Selected");
               selectedCreaturePart = creature.name;
               layer.creatures.forEach(function(creature, index2){
+                waitForSelection = false;
                 creature.alive = false;
                 creature.image.destroy();
-                console.log(creature.name + " Destroyed");
+                // console.log(creature.name + " Destroyed");
               });
             }
           }
@@ -146,6 +154,8 @@ class BuildScene extends Phaser.Scene {
       scaleRate -= changeRate;
       changeRate -= 0.05;
     }
+
+    this.waitForSelection = waitForSelection;
 
     if(selectedCreaturePart.includes("Head")){
       this.add.image(circleCenter.x, circleCenter.y, selectedCreaturePart).setScale(0.25);
@@ -170,14 +180,15 @@ class BuildScene extends Phaser.Scene {
     else if (this.waitForUp && this.cursorKeys.down.isUp) {
       this.waitForUp = false;
 
-      if (activeLayer < this.numLayers - 2){
+      if (activeLayer < this.numLayers - 2 && !this.waitForSelection){
         this.layers[this.activeLayer+1].image.destroy();
-      }
-      if (activeLayer < this.numLayers){
-        this.activeLayer += 1;
+        this.waitForSelection = true;
+        if (activeLayer < this.numLayers){
+          this.activeLayer += 1;
+        }
       }
 
-      if (activeLayer == this.numLayers){
+      if (activeLayer == 2){
         this.scene.start('Battle', {  head: this.selectedCreature.head,
                                       bod: this.selectedCreature.bod,
                                       legs: this.selectedCreature.legs});
