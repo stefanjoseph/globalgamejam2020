@@ -47,7 +47,7 @@ class BuildScene extends Phaser.Scene {
 
     //physics group for token
     var tokenGroup = this.physics.add.group({
-        defaultKey: 'token',
+        defaultKey: 'tokenRed',
         bounceX: 0,
         bounceY: 0,
         collideWorldBounds: false
@@ -174,10 +174,10 @@ class BuildScene extends Phaser.Scene {
                             this.circleCenter.y - this.token.y);
 
     //Player input
-    if(this.cursorKeys.down.isDown){
+    if(this.cursorKeys.space.isDown){
       this.waitForUp = true;
     }
-    else if (this.waitForUp && this.cursorKeys.down.isUp) {
+    else if (this.waitForUp && this.cursorKeys.space.isUp) {
       this.waitForUp = false;
 
       if (activeLayer < this.numLayers - 2 && !this.waitForSelection){
@@ -188,7 +188,7 @@ class BuildScene extends Phaser.Scene {
         }
       }
 
-      if (activeLayer == 2){
+      if (!this.waitForSelection && activeLayer == 2){
         this.scene.start('Battle', {  head: this.selectedCreature.head,
                                       bod: this.selectedCreature.bod,
                                       legs: this.selectedCreature.legs});
