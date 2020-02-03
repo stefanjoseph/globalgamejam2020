@@ -3,19 +3,22 @@ class TitleScene extends Phaser.Scene {
 
   preload(){
 
+
+
     for (var ii = 1; ii <= 6; ii++){
       this.load.audio('music_00'+ii, [
       'sounds/Loop_00'+ii+'.ogg']);
     }
     this.load.image("ball", "images/ball.png");
-    this.load.image("title", "images/TitleScreen.png");
+        this.load.image("title", "images/TitleScreen.png");
     this.load.image("win", "images/YouWin.png");
     this.load.image("lose", "images/YouLose.png");
     this.load.image("count1", "images/1.png");
     this.load.image("count2", "images/2.png");
     this.load.image("count3", "images/3.png");
     this.load.image("fight", "images/fight.png");
-    this.load.image("heart", "images/actions/heart.png");
+
+        this.load.image("heart", "images/actions/heart.png");
     //characters ---
 
     //dog axolot mantis
@@ -28,6 +31,7 @@ class TitleScene extends Phaser.Scene {
     this.load.image("mantisHead", "images/char_parts/mantisHead01.png");
       this.load.image("mantisBod", "images/char_parts/mantisBody01.png");
     this.load.image("mantisLegs", "images/char_parts/mantisLegs01.png");
+
 
     this.load.image("dogHeadOn", "images/char_parts/dogHead02.png");
     this.load.image("dogBodOn", "images/char_parts/dogBody02.png");
@@ -93,25 +97,22 @@ class TitleScene extends Phaser.Scene {
     // this.load.image("bg3", "images/backgrounds/scene3.jpg");
     // this.load.image("bg4", "images/backgrounds/scene4.jpg");
     // this.load.image("bg5", "images/backgrounds/scene5.jpg");
-    this.load.image("bg3", "images/backgrounds/BG03Gradient.png");
-    this.load.image("wheel", "images/wheel.png");
-    this.load.image("tokenRed", "images/tokenRed.png");
-    this.load.image("token", "images/token.png");
-
   }
 
   create() {
     this.add.text(20, 20, "Welcome. Press space to start game.");
 
     var title = this.add.image(320,288,"title");
-      this.add.text(204, 385, "Press Space Bar to Begin");
+      this.add.text(204, 385, "Press your Face to Begin");
     title.setScale(.25);
     this.cursorKeys = this.input.keyboard.createCursorKeys();
   }
   update() {
   if(this.cursorKeys.space.isDown){
-    this.scene.start("BuildScene");
+    // this.scene.start("BuildScene");
     // this.scene.start("Battle");
+    // this.scene.start("BuildScene");
+    this.scene.start("Battle");
       }
     }
 }
