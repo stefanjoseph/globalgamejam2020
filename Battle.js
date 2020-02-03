@@ -4,7 +4,7 @@ class Battle extends Phaser.Scene {
         // this.fightBackgrounds =["bg1","bg2","bg3","bg4","bg5"];
         this.fightBackgrounds =["bg1","bg2"];
   }
-
+//AWESOME ! 
     create(){
     // this.add.text(20, 20, "Battle Scene!", {font: "25px Arial", fill: "yellow"});
     // this.add.text(20, 20, "Battle Scene!", {font: "25px Arial", fill: "yellow"});
