@@ -1,191 +1,319 @@
-class Character{
-  constructor(scene,head,bod,legs,name){
-    this.scene = scene;
-    this.head = head;
-    console.log("fun" + this.head);
-    this.bod = bod;
-    this.legs = legs;
-    this.name = name;
-    this.dead = false;
-
-    // this.charname;
-    this.animal = ["dog","mantis","axolotl","bat","duck","pangolin","robo","slime"];
-    this.headParts =[];
-    this.bodParts=[];
-    this.legParts=[];
-    this.headPartsOn =[];
-    this.bodPartsOn=[];
-    this.legPartsOn=[];
-    this.parts = this.scene.add.container(0,0);
-    this.partsOn = this.scene.add.container(0,0);
-    // this.parts.y = 900;
-    // this.makeHead();
+class Battle extends Phaser.Scene {
+  constructor(){
+    super("Battle");
+        // this.fightBackgrounds =["bg1","bg2","bg3","bg4","bg5"];
+        this.fightBackgrounds =["bg1","bg2"];
   }
-  nameMe(name){
-    this.charname = name;
-  };
-  makeHead(){
-    // this.parts=this.scene.add.image(200,200,"dogHead");
-  }
-  takeAction(){
+
+  init(data){
+    console.log('init', data + " :::: " + this.animalFix("dog"));
+    this.data = data;
+    this.animalFix("dog");
+    // this.charHead = data[0];
+    // this.charBod = data[1];
+    // this.caarFeet = data[2];
+    }
 
 
-  // timedEvent = this.time.addEvent({ delay: 2000, callback: onEvent, callbackScope: this });
+animalFix(str){
 
- //  The same as above, but uses a method signature to declare it (shorter, and compatible with GSAP syntax)
- this.timedEvent = this.scene.time.delayedCall(1000, this.onEvent, [], this);
+
+    switch(str){
+      case "dog":
+  return 0;
+      break;
+      case "mantis":
+      // "dog","mantis","axolotl","bat","duck","pangolin","robo","slime"];
+      break;
+      case "axolotl":
+      // "dog","mantis","axolotl","bat","duck","pangolin","robo","slime"];
+      break;
+      case "bat":
+      // "dog","mantis","axolotl","bat","duck","pangolin","robo","slime"];
+      break;
+      case "duck":
+      // "dog","mantis","axolotl","bat","duck","pangolin","robo","slime"];
+      break;
+      case "pangolin":
+      // "dog","mantis","axolotl","bat","duck","pangolin","robo","slime"];
+      break;
+      case "robo":
+      // "dog","mantis","axolotl","bat","duck","pangolin","robo","slime"];
+      break;
+      case "slime":
+      // "dog","mantis","axolotl","bat","duck","pangolin","robo","slime"];
+      break;
+      default:
+      return 100;
+    }
 }
+//AWESOME !
+    create(){
+    // this.add.text(20, 20, "Battle Scene!", {font: "25px Arial", fill: "yellow"});
+    // this.add.text(20, 20, "Battle Scene!", {font: "25px Arial", fill: "yellow"});
+    this.countdown = this.add.container(0,0);
+    this.music1=this.sound.add("music_001");
+    this.music2=this.sound.add("music_002");
+    this.music3=this.sound.add("music_003");
+    this.music4=this.sound.add("music_004");
+    this.music5=this.sound.add("music_005");
+    this.musicSounds = [this.music1,this.music2,this.music3,this.music4,this.music5];
+  this.battleActive = false;
+    this.musicCount=0;
+    // this.countdown.this.add.image(320,288,"count3");
+    // this.countdown = this.add.image(320,288,"count3");
+    var countdown= this.add.container(320, 288);
+    var count1 = this.add.image(0,0,"count1");
+    var count2 = this.add.image(0,0,"count2");
+    var count3 = this.add.image(0,0,"count3");
+    var fight = this.add.image(0,0,"fight");
 
-// update ()
-// {
-//  text.setText('Event.progress: ' + timedEvent.getProgress().toString().substr(0, 4));
-// }
+    this.battleCount=0;
+    count1.setScale(0);
+    count2.setScale(0);
+    count3.setScale(0);
+    fight.setScale(0);
+    countdown.add(count1);
+    countdown.add(count2);
+    countdown.add(count3);
+    countdown.add(fight);
 
-onEvent ()
-{
- // image.setScale(0.5);
+    this.character = new Character(this,"a","b","c","Cool");
+    this.character2 = new Character(this,"a","d","x","ok");
+    this.winScreen = this.add.image(320,100,"win");
+    this.winScreen.setScale(.25);
+  this.winScreen.visible=false;
+    this.loseScreen = this.add.image(320,100,"lose");
+    this.loseScreen.setScale(.25);
 
- if(this.partsOn.visible){
- this.partsOn.visible=false;
- this.parts.visible =true;
-}else{
-  this.partsOn.visible=true;
-  this.parts.visible =false;
-}
- if(!this.dead){
- this.timedEvent = this.scene.time.delayedCall(1000+Math.random()*2000, this.onEvent, [], this);
-}
-}
+    // this.loseScreen.alpha = .5;
+    this.loseScreen.visible=false;
+
+    this.character = new Character(this,1,"b","c","Cool");
+    this.character2 = new Character(this,1,"d","x","ok");
+    // this.character.setDepth(2);
+    //   this.character2.setDepth(3);
+//add background --- randomly assign
+
+    //    // gsap.set(this.ball, { x:1200, opacity:1});
+    // tl.to(this.character2, 1,{x:800, ease:Expo.easeNone,delay:.05});
+    this.cursorKeys = this.input.keyboard.createCursorKeys();
+    var particles = this.add.particles('count1');
+    particles.setPosition( 320, 288);
+ //    var particles = this.add.particles('heart');
+ //
+ //    particles.setPosition( 320, 288);
+ // var emitter = particles.createEmitter({
+ //       speed: 1000,
+ //       speed: 100,
+ //       scale: { start: 1, end: 0 },
+ //
+ //       blendMode: 'ADD'
+ //   });
+ //   particles.setDepth(0);
 
 
-  reposition(x,y,startx=0,starty=0){
-      this.parts.setDepth(2);
-      this.partsOn.setDepth(3);
-    this.parts.x = startx;
-    this.parts.y = starty;
-    this.parts.setScale(.25);
+   // emitter.positsion.y=500;
+     var timeline = this.tweens.createTimeline();
+    timeline.play();
 
-    this.partsOn.x = startx;
-    this.partsOn.y = starty;
-    this.partsOn.setScale(.25);
-    this.partsOn.rotation= 0;
-    this.parts.rotation=0;
-    this.parts.opacity=1
-
-    this.parts.alpha =1;
-      this.partsOn.alpha=1;
-    this.scene.tweens.killAll();
-    this.scene.tweens.add({
-        targets: [this.parts,this.partsOn],
-              x: { value: x, duration: 4000, ease: 'Power2' },
-              y: { value: y, duration: 1500, ease: 'Bounce.easeOut' }
+    timeline.add({
+        targets: count3,
+        scale: 10,
+        rotation:.5,
+        ease: 'Power1',
+        duration: 1000,
+        delay:0,
+        alpha: {
+      getStart: () => 1,
+      getEnd: () => 0
+    }
     });
-    this.takeAction();
+  timeline.add({
+      targets: count2,
+      scale: 10,
+      rotation:.5,
+      ease: 'Power1',
+      duration: 1000,
+      delay:0,
+      alpha: {
+    getStart: () => 1,
+    getEnd: () => 0
+  }
+  });
+
+timeline.add({
+      targets: count1,
+      scale: 10,
+      rotation:.5,
+      ease: 'Power1',
+      duration: 1000,
+      delay:0,
+      alpha: {
+    getStart: () => 1,
+    getEnd: () => 0
+  }
+  });
+  timeline.add({
+      targets: fight,
+      scale: 3,
+      rotation:0,
+      ease: 'Power1',
+      duration: 1000,
+      delay:0,
+      alpha: {
+    getStart: () => 1,
+    getEnd: () => 0
 
   }
-
-
-
-
-  flipIt(){
-    // this.parts.flipX=false;
-// this.parts.flipX = true;
-this.parts.scaleX = -.25;
-this.partsOn.scaleX = -.25;
-  }
-  winIt(n){
-    console.log("KIll it");
-// this.partsOn.removeAll(true);
-  // this.parts.removeAll(true);
-  // if(this.parts.ScaleX == -.5)
-  if(n){
-   this.scene.tweens.add({
-       targets: [this.parts,this.partsOn],
-                y: { value: 320, duration: 2000, ease: 'Power2' },
-                y: { value: 288, duration: 2000, ease: 'Power2' },
-               scaleX:{ value: -.5, duration: 4000, ease: 'Power2' },
-               scaleY:{ value: .5, duration: 4000, ease: 'Power2' },
-
-   });
- }else{
-   this.scene.tweens.add({
-       targets: [this.parts,this.partsOn],
-                y: { value: 320, duration: 2000, ease: 'Power2' },
-                y: { value: 288, duration: 2000, ease: 'Power2' },
-               scaleX:{ value:.5, duration: 4000, ease: 'Power2' },
-               scaleY:{ value: .5, duration: 4000, ease: 'Power2' },
-
-   });
- }
-  }
-  killIt(){
-    console.log("KIll it");
-// this.partsOn.removeAll(true);
-  // this.parts.removeAll(true);
-   this.scene.tweens.add({
-       targets: [this.parts,this.partsOn],
-             rotation: { value: 300, duration: 4000, ease: 'Power2' },
-
-               scaleX:{ value: 2, duration: 4000, ease: 'Power2' },
-               scaleY:{ value: 2, duration: 4000, ease: 'Power2' },
-               alpha: {
-             getStart: () => 1,
-             getEnd: () => 0
-           }
-   });
-  }
-setParts(h,b,l){
-  this.head = h;
-  this.bod = b;
-  this.legs = l;
+    });
+// timeline.setCallBack(onComplete,fightEm);
+this.timedEvent = this.time.delayedCall(4100, this.fightEm, [], this);
 }
-  makeRandomChar(h,b,l) {
+  // this.fightEm();
+  // setTimeout(this. fightEm, 5000);
 
-    for(var i=0;i<this.animal.length;i++){
-      this.headParts.push(this.animal[i]+"Head");
-      this.bodParts.push(this.animal[i]+"Bod");
-      this.legParts.push(this.animal[i]+"Legs");
+  fightEm(){
+    // this.character.reposition(320-50,288);
+    //  this.character2.reposition(320+50,288,576,0);
+    // this.character.makeRandomChar();
+    // this.character2.makeRandomChar();
+    // this.character.reposition(320-50,450);
+    //  this.character2.reposition(320+50,450,576,0);
+    // this.character.makeRandomChar();
+    // this.character2.makeRandomChar();
+    this.winScreen.visible=false;
+    this.loseScreen.visible=false;
 
-      this.headPartsOn.push(this.animal[i]+"HeadOn");
-      this.bodPartsOn.push(this.animal[i]+"BodOn");
-      this.legPartsOn.push(this.animal[i]+"LegsOn");
+    if(!this.battleActive){
 
+      this.buildBackground();
+      this.character.reposition(320-50,475);
+       this.character2.reposition(320+50,475,576,0);
+
+       this.character2.flipIt();
+
+
+      this.character.makeRandomChar(0,0,0);
+
+
+      this.character2.makeRandomChar(1,1,1);
+      this.battleActive= true;
+    this.battleMode();
     }
 
-    //RANDO VERSION ----
-      var headPart = Math.floor(Math.random()*this.animal.length);
-      var bodPart = Math.floor(Math.random()*this.animal.length);
-      var legPart = Math.floor(Math.random()*this.animal.length);
-      console.log("THIS HEAD "+ this.head );
-      //
-      // var headPart = h;
-      // var bodPart = b;
-      // var legPart=l;
-      // console.log("THIS HEAD2 "+ headPart);
+  }
+  stopAllSounds(){
+this.music1.stop();
+this.music1.stop();
+this.music2.stop();
+this.music3.stop();
+this.music4.stop();
+this.music5.stop();
+  }
+  battleMode(){
 
+    this.timedEvent = this.time.delayedCall(1000+Math.random()*1000, this.battleTime, [], this);
+    // this.music.removeAll();
+    // this.music.stop();
+// this.music.remove(true);
+  // this.music.stop();
+  // this.music.removeAll(true);
 
+    console.log("MUSIC "+ this.musicSounds[this.musicCount] + " : " + this.musicCount);
 
-     this.parts.removeAll(true);
-     this.partsOn.removeAll(true);
-        // this.setScale(2)
-      this.head= this.scene.add.image(0,0,this.headParts[headPart]);
-      this.bod= this.scene.add.image(0,0,this.bodParts[bodPart]);
-      this.feet= this.scene.add.image(0,0,this.legParts[legPart]);
+    this.stopAllSounds();
+    this.musicCount++;
+    this.musicSounds[this.musicCount].setLoop(true);
+    this.musicSounds[this.musicCount].play();
+      if(this.musicCount>=4){
+        this.musicCount=0;
+      }
 
-      this.headOn= this.scene.add.image(0,0,this.headPartsOn[headPart]);
-      this.bodOn= this.scene.add.image(0,0,this.bodPartsOn[bodPart]);
-      this.feetOn= this.scene.add.image(0,0,this.legPartsOn[legPart]);
+  }
+battleTime ()
+  {
 
-      this.parts.add([this.head,this.bod,this.feet]);
-      this.partsOn.add([this.headOn,this.bodOn,this.feetOn]);
+    // music.play();
 
-      // this.parts.add(this.scene.add.image(0,0,this.headParts[headPart]));
-      // this.parts.add(this.scene.add.image(0,0,this.bodParts[bodPart]));
-      // this.parts.add(this.scene.add.image(0,0,this.legParts[legPart]));
+    this.battleCount++;
+        console.log("battle continues! "+ this.battleCount);
 
+        switch(this.battleCount){
+          case 1:
 
-       console.log(" HEAD " +this.parts.y);
-      //this.killIt();
+          case 2:
+
+          case 3:
+
+          case 4:
+
+          case 5:
+
+          case 6:
+          this.timedEvent = this.time.delayedCall(1000+Math.random()*1000, this.battleTime, [], this);
+
+          break;
+          case 7:
+          this.battleCount=0;
+
+      this.timedEvent.destroy();
+
+          this.endBattle();
+    //  this.musicSounds[this.musicCount].stop();
+          break;
+
+          default:break;
+        }
+  }
+  endBattle(){
+    // this.fightBg.alpha = .5;
+    if(Math.random()>.5){
+      console.log("WINNER :)");
+      this.character.winIt(false);
+      this.character2.killIt();
+      this.winScreen.visible=true;
+      this.winScreen.alpha =1;
+      this.winScreen.setDepth(1);
+    }else{
+        console.log("LOSER :( ");
+        this.character2.winIt(true);
+        this.character.killIt();
+        this.loseScreen.alpha =1;
+        this.loseScreen.visible=true;
+        this.loseScreen.setDepth(1);
     }
+    this.battleActive = false;
 
+  }
+  // onCompleteHandler (tween, targets)
+  // {
+
+  buildBackground(){
+       this.fightBg = this.add.image(320,288,this.fightBackgrounds[Math.floor(Math.random()*this.fightBackgrounds.length)]);
+       this.fightBg.opacity=.7;
+       // this.fightBg.opacity=.7;
+       this.fightBg.setScale(.25);
+       //this.fightBg.sendtoBack();
+          this.fightBg.setDepth(0);
+
+     }
+
+  update() {
+    if(this.cursorKeys.space.isDown){
+    // this.fightEm();
+    if(!this.battleActive){
+        this.fightEm();
+    }
+   // this.buildBackground();
+   //    this.character.reposition(320-50,288);
+   //     this.character2.reposition(320+50,288,576,0);
+   //    this.character.makeRandomChar();
+   //    this.character2.makeRandomChar();
+
+  // this.stopAllSounds();
+  //     this.scene.start("TitleScene");
+
+    }
+  }
 }
