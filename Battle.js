@@ -314,7 +314,10 @@ battleTime ()
     if(this.cursorKeys.space.isDown){
     // this.fightEm();
     if(!this.battleActive){
-        this.fightEm();
+        // this.fightEm();
+          // this.scene.start("TitleScene");
+          this.stopAllSounds();
+          this.scene.start("BuildScene");
     }
    // this.buildBackground();
    //    this.character.reposition(320-50,288);
@@ -322,8 +325,7 @@ battleTime ()
    //    this.character.makeRandomChar();
    //    this.character2.makeRandomChar();
 
-  // this.stopAllSounds();
-  //     this.scene.start("TitleScene");
+
 
     }
   }
