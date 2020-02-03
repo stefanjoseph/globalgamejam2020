@@ -174,10 +174,10 @@ class BuildScene extends Phaser.Scene {
                             this.circleCenter.y - this.token.y);
 
     //Player input
-    if(this.cursorKeys.down.isDown){
+    if(this.cursorKeys.space.isDown){
       this.waitForUp = true;
     }
-    else if (this.waitForUp && this.cursorKeys.down.isUp) {
+    else if (this.waitForUp && this.cursorKeys.space.isUp) {
       this.waitForUp = false;
 
       if (activeLayer < this.numLayers - 2 && !this.waitForSelection){
