@@ -94,7 +94,7 @@ class TitleScene extends Phaser.Scene {
     // this.load.image("bg4", "images/backgrounds/scene4.jpg");
     // this.load.image("bg5", "images/backgrounds/scene5.jpg");
     this.load.image("bg3", "images/backgrounds/BG03Gradient.png");
-    this.load.image("wheel", "images/wheel.png");
+    this.load.image("wheel", "images/Wheel.png");
     this.load.image("tokenRed", "images/tokenRed.png");
     this.load.image("token", "images/token.png");
 
